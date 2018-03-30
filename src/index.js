@@ -7,15 +7,16 @@ var groupName = process.env.CLOUDWATCH_LOG_GROUP_NAME;
 exports.handler = function (event, context, callback) {
 
   ////////////////////////////////////////////////////
-  // Change the content of message below!!!!
+  // Change the subject and content of message below!!!!
   ////////////////////////////////////////////////////
+  var subject = "Put a subject of alert here!!!";
   var message = "Put a message to alert here!!!";
 
   var sentAt = (new Date()).toISOString();
   var logMessage = {
     "awsid": context.invokedFunctionArn.split(":")[4],
     "region": process.env.AWS_DEFAULT_REGION,
-    "subject": "A new alert has been simulated",
+    "subject": subject,
     "message": message,
     "sentBy": context.invokedFunctionArn,
     "sentAt": sentAt

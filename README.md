@@ -5,6 +5,23 @@ Alert Trigger that Sends alert messages to Alert Kinesis Stream
 
 ![aws-services][aws-services-image]
 
+## Prerequisites For Setup
+
+If this project is deployed in an account that is different with the main account where the Alert System was deployed, we need to add a permission for the account to access the Destination in the main account.
+
+  - Go to the Lambda console of the main account and ‘us-east-1’ region
+
+  - Find a function called ‘SungardAS-Alerts- Permission-xxxx’ and configure the test event as below:
+
+  `{
+    "region": "<region name where this project is deployed>",
+    "account": "<account number where this project is deployed>",
+    "destinationName": "<destination name defined in main Alert System; 'alertDestination' if not changed"
+  }`
+
+  - Run Test to execute this lambda function
+
+
 ## How To Setup a CodePipeline
 
 Create a stack using 'codepipeline.yaml' using below input values
