@@ -13,7 +13,7 @@ Input Parameter Values
 
 - CloudWatchLogDestinationArn:
 
-  Value of 'CloudWatchDestinationArn' in 'Outputs' of 'SungardAS-aws-services-alerts(-destination)' stack in the main account's same region with one where this project is deployed
+  Value of `CloudWatchDestinationArn` in 'Outputs' of `SungardAS-aws-services-alerts(-destination)` stack in the main account's `same region` with one where this project is deployed
 
 - CloudWatchLogGroupName:
 
