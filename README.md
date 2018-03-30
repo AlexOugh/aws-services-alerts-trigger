@@ -13,15 +13,13 @@ If this project is deployed in an account that is different from the main accoun
 
   - Find a function called ‘SungardAS-Alerts- Permission-xxxx’ and configure the test event as below:
 
-  `{
-
+  ```javascript
+  {
       "region": "<region name where this project is deployed>",
-
       "account": "<account number where this project is deployed>",
-
-      "destinationName": "<destination name defined in main Alert System; 'alertDestination' if not changed"
-
-    }`
+      "destinationName": "<destination name defined in main Alert System; 'alertDestination' if not changed>"
+  }
+  ```
 
   - Run Test to execute this lambda function
 
