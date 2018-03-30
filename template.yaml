@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Cloudformation to Build a Trigger in SungardAS Alert System
+Parameters:
+  CloudWatchLogDestinationArn:
+    Type: String
+    Description: CloudWatch Log Destination Arn. This destination must be in the same region with current one.
+  CloudWatchLogGroupName:
+    Type: String
+    Description: Cloudwatch Log Group Name
+
+Resources:
+  CloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join
+        - "/"
+        - - !Ref CloudWatchLogGroupName
+          - !Ref AWS::Region
+  SubscriptionFilter:
+    Type: AWS::Logs::SubscriptionFilter
+    DependsOn: CloudWatchLogGroup
+    Properties:
+      LogGroupName: !Join
+        - "/"
+        - - !Ref CloudWatchLogGroupName
+          - !Ref AWS::Region
+      FilterPattern: ""
+      DestinationArn: !Ref CloudWatchLogDestinationArn
+  LambdaFunctionIAMRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      Path: "/"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: "AllowLambdaServiceToAssumeRole"
+            Effect: "Allow"
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+      Policies:
+        -
+          PolicyName: "InlinePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "arn:aws:logs:*:*:*"
+              -
+                Effect: "Allow"
+                Action:
+                  - "logs:*"
+                  - "cloudwatchlogs:*"
+                Resource: "*"
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SungardAS-Alerts-Trigger
+      Handler: index.handler
+      Runtime: nodejs4.3
+      CodeUri: ./src
+      Role: !GetAtt LambdaFunctionIAMRole.Arn
+      Timeout: 300
+      Environment:
+        Variables:
+          CLOUDWATCH_LOG_GROUP_NAME: !Join
+            - "/"
+            - - !Ref CloudWatchLogGroupName
+              - !Ref AWS::Region
+
+Outputs:
+  LambdaFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt LambdaFunction.Arn
