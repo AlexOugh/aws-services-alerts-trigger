@@ -25,7 +25,7 @@ Input Parameter Values
 
 - GitHubSourceRepositoryBranch: `master`
 
-- GitHubSourceRepositoryName: `aws-services-alerts-destination`
+- GitHubSourceRepositoryName: `aws-services-alerts-trigger`
 
 - GitHubSourceRepositoryOwner: `SungardAS`
 
